@@ -6,7 +6,9 @@ This project aims to replicate the Self-Other Overlap (SOO) fine-tuning methodol
 
 As the original code and fine-tuning data are not publicly available, this repository contains custom implementations of the data generation process and the SOO fine-tuning training script, developed with significant assistance from large language models (Gemini 1.5 Pro, GPT-4o). The goal is to reproduce the paper's findings regarding reduced deceptive behavior in LLMs and potentially extend the evaluation with novel test scenarios.
 
-Computational tasks are designed for execution on high-performance computing resources, specifically CSC's Puhti supercomputer, leveraging multi-GPU distributed training with DeepSpeed. *Note: Project progress may be dependent on HPC resource availability.*
+Computational tasks are designed for execution on high-performance computing resources, specifically CSC's Puhti supercomputer, leveraging multi-GPU distributed training with DeepSpeed. 
+
+*Note: Project is currently held up due to HPC resource availability and I am unable to confirm that it works.*
 
 ## Methodology
 
@@ -15,19 +17,19 @@ The core idea of SOO fine-tuning is to align the model's internal representation
 This repository implements the following workflow:
 
 1.  **Data Generation:** `generate_data.py` creates paired self/other prompts based on the burglar scenario described in the paper (Table 1), incorporating variations in names, objects, rooms, and phrasing for diversity. The output is saved in JSON Lines (`.jsonl`) format.
-2.  **Fine-tuning:** The primary Python training script (e.g., `train_soo_v100.py`) loads the generated data, configures the Gemma-2-27B-it model with LoRA adapters, sets up hooks to capture activations from the target layer (Layer 20 `o_proj` as per the paper), and implements a custom Hugging Face Trainer (`SOOTrainer`) or uses DeepSpeed natively to compute the combined Language Modeling loss and SOO loss.
+2.  **Fine-tuning:** The primary Python training script (`finetuning.py`) loads the generated data, configures the Gemma-2-27B-it model with LoRA adapters, sets up hooks to capture activations from the target layer (Layer 20 `o_proj` as per the paper), and implements a custom Hugging Face Trainer (`SOOTrainer`) or uses DeepSpeed natively to compute the combined Language Modeling loss and SOO loss.
 3.  **Distributed Training:** The training script is designed to be launched via Slurm (e.g., `submit_gemma_soo.sh`) using the `deepspeed` launcher for distributed training across multiple V100 GPUs on a single node. DeepSpeed configuration (e.g., `ds_config_stage3.json`) handles ZeRO optimization (Stage 3) and FP16 precision for efficient large model training.
 
 ## Repository Structure
 
 *   `generate_data.py`: Script to generate the paired SOO fine-tuning data (`.jsonl` format).
-*   `train_soo_v100.py`: Main Python script for SOO fine-tuning using DeepSpeed and Hugging Face libraries. (Or your primary training script name)
+*   `finetuning.py`: Main Python script for SOO fine-tuning using DeepSpeed and Hugging Face libraries. (Or your primary training script name)
 *   `ds_config_stage3.json`: DeepSpeed configuration file for ZeRO Stage 3 optimization.
 *   `submit_gemma_soo.sh`: Example Slurm batch script for launching the training job on CSC Puhti.
 *   `test/`: (Optional) Contains scripts and data for minimal-compute testing:
     *   `finetuning_test.py`: A version of the training script configured for short test runs.
     *   `submit_gemma_soo_test.sh`: Example Slurm script for submitting a short test job.
-    *   `soo_test_data*.jsonl`: Small example dataset for testing.
+    *   `soo_finetuning_data10.jsonl`: Small example dataset for testing.
 
 ## Usage
 
@@ -41,9 +43,8 @@ This repository implements the following workflow:
     *   Modify the Slurm script (`submit_gemma_soo.sh`) with your project account details and desired resource allocation.
     *   Review and adjust the DeepSpeed configuration (`ds_config_stage3.json`) and `TrainingArguments` within the Python script if necessary (e.g., batch size, learning rate).
     *   Ensure file paths within the scripts are correct.
-4.  **Testing (Recommended):**
-    *   Generate a small test dataset (e.g., `python generate_data.py --num_examples 32 --filename soo_test_data.jsonl`).
-    *   Use the test submission script (`submit_gemma_soo_test.sh`) and test training script (`finetuning_test.py`), potentially requesting an interactive session, to verify the setup with minimal resource usage.
+4.  **Testing:**
+    *   Use the test submission script (`submit_gemma_soo_test.sh`) and test training script (`finetuning_test.py`), to verify the setup with minimal compute usage.
 5.  **Training:**
     *   Submit the main Slurm job: `sbatch submit_gemma_soo.sh`.
     *   Monitor the job progress and output files.
