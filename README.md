@@ -55,4 +55,4 @@ Carauleanu, M., Vaiana, M., Rosenblatt, J., Berg, C., & de Lucena, D. S. (2024).
 
 ## Acknowledgements
 
-Development of the code within this repository was significantly aided by discussions and code generation assistance from large language models, including Google's Gemini 1.5 Pro and OpenAI's GPT-4o. Access to computational resources was provided by CSC – IT Center for Science, Finland.
+Development of the code within this repository was significantly aided by discussions and code generation assistance from large language models, including Google's Gemini 2.5 Pro Experimental and OpenAI's GPT-4o. Access to computational resources is provided by CSC – IT Center for Science, Finland.
