@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project aims to replicate the Self-Other Overlap (SOO) fine-tuning methodology presented in the paper "Towards Safe and Honest AI Agents with Neural Self-Other Overlap" (Carauleanu et al., 2024), specifically focusing on its application to the Gemma-2-27B-it language model.
+This is a work in progess project aiming to replicate the Self-Other Overlap (SOO) fine-tuning methodology presented in the paper "Towards Safe and Honest AI Agents with Neural Self-Other Overlap" (Carauleanu et al., 2024) focusing on its application to the Gemma-2-27B language model.
 
 As the original code and fine-tuning data are not publicly available, this repository contains custom implementations of the data generation process and the SOO fine-tuning training script, developed with assistance from large language models (Gemini 2.5 Pro, GPT-4o). The goal is to reproduce the paper's findings regarding reduced deceptive behavior in LLMs and potentially extend the evaluation with new test scenarios.
 
@@ -31,23 +31,22 @@ This repository implements the following workflow:
     *   `submit_gemma_soo_test.sh`: Example Slurm script for submitting a short test job.
     *   `soo_finetuning_data10.jsonl`: Small example dataset for testing.
 
-## Usage
+## Usage workflow for the training
 
 1.  **Setup:**
-    *   Clone the repository.
-    *   Install required Python packages (e.g., `torch`, `transformers`, `peft`, `datasets`, `deepspeed`, `accelerate`). A Python virtual environment is recommended.
-    *   Ensure access to the target HPC environment (e.g., CSC Puhti) if applicable.
+    *   Installing required Python packages (e.g., `torch`, `transformers`, `peft`, `datasets`, `deepspeed`, `accelerate`). A Python virtual environment is recommended.
+    *   Accessing HPC environment.
 2.  **Data Generation:**
-    *   Run `python generate_data.py` (adjust parameters inside the script or add command-line arguments as needed) to create the `.jsonl` training file.
+    *   Running `python generate_data.py` to get the amount of examples wanted.
 3.  **Configuration:**
-    *   Modify the Slurm script (`submit_gemma_soo.sh`) with your project account details and desired resource allocation.
-    *   Review and adjust the DeepSpeed configuration (`ds_config_stage3.json`) and `TrainingArguments` within the Python script if necessary (e.g., batch size, learning rate).
-    *   Ensure file paths within the scripts are correct.
+    *   Modifying the Slurm script (`submit_gemma_soo.sh`) for correct credentials and resource requests.
+    *   Adjusting the DeepSpeed configuration (`ds_config_stage3.json`) and `TrainingArguments` within the Python script.
+    *   Ensuring file paths within the scripts are correct.
 4.  **Testing:**
-    *   Use the test submission script (`submit_gemma_soo_test.sh`) and test training script (`finetuning_test.py`), to verify the setup with minimal compute usage.
+    *   Running the scrum script (`submit_gemma_soo_test.sh`) and test training script (`finetuning_test.py`), to verify the setup with minimal compute usage.
 5.  **Training:**
-    *   Submit the main Slurm job: `sbatch submit_gemma_soo.sh`.
-    *   Monitor the job progress and output files.
+    *   Submitting the main Slurm job: `sbatch submit_gemma_soo.sh`.
+    *   Monitoring the job progress and output files.
 
 ## Citation
 
