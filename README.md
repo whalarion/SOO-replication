@@ -4,7 +4,7 @@
 
 This is a work in progess project aiming to replicate the Self-Other Overlap (SOO) fine-tuning methodology presented in the paper "Towards Safe and Honest AI Agents with Neural Self-Other Overlap" (Carauleanu et al., 2024) focusing on its application to the Gemma-2-27B language model.
 
-As the original code and fine-tuning data are not publicly available, this repository contains custom implementations of the data generation process and the SOO fine-tuning training script, developed with assistance from large language models (Gemini 2.5 Pro, GPT-4o). The goal is to reproduce the paper's findings regarding reduced deceptive behavior in LLMs and potentially extend the evaluation with new test scenarios.
+As the original code and fine-tuning data are not publicly available, this repository contains custom implementations of the data generation process and the SOO fine-tuning training script, developed with assistance from large language models (about 50% of work done by Gemini 2.5 Pro and GPT-4o). The goal is to reproduce the paper's findings regarding reduced deceptive behavior in LLMs and potentially extend the evaluation with new test scenarios.
 
 Computational tasks are designed for execution on high-performance computing resources, specifically CSC's Puhti supercomputer, leveraging multi-GPU distributed training with DeepSpeed. 
 
