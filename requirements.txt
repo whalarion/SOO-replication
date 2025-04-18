@@ -1,0 +1,22 @@
+# requirements.txt for SOO Fine-tuning Project
+
+# Core ML Libraries
+#torch>=1.13.1 #Already installed and loaded as a module
+
+# Hugging Face Ecosystem
+transformers>=4.35.0  # Core library for models, tokenizers, trainer
+datasets>=2.14.0     # For data loading and processing
+peft>=0.7.0         # For LoRA / Parameter-Efficient Fine-Tuning
+accelerate>=0.25.0   # Simplifies distributed training & mixed precision
+
+# Distributed Training & Optimization
+deepspeed>=0.12.0     # For ZeRO optimization / distributed training
+
+# Tokenizer Dependencies (often needed)
+sentencepiece>=0.1.98 # Tokenizer backend
+
+# Notes:
+# 1. Ensure the base PyTorch version (e.g., 1.13.1) is compatible with the loaded HPC module and its CUDA version.
+# 2. This file specifies minimum versions. Pip will install the latest available versions satisfying these constraints.
+#    This may lead to newer versions than tested.
+# 3. Install using: pip install -r requirements.txt

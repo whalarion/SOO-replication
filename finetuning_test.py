@@ -12,9 +12,9 @@ precision = torch.float16
 # Path to your generated data
 data_file_path = "soo_finetuning_data10.jsonl"
 # Model ID or path (use path if pre-downloaded to NVMe)
-# model_name = os.environ.get("MODEL_PATH_LOCAL", "google/gemma-2-27b-it") # Example using env var from Slurm
-model_name = "google/gemma-2-27b-it" # Or adjust as needed
-# Output directory (ideally on /scratch)
+# Using locally downloaded model
+model_name = "/scratch/project_2013894/models"
+# Output directory
 output_dir = "./gemma-lora-soo-finetuned-v100-ds"
 # DeepSpeed config file name
 ds_config_path = "ds_config_stage3.json"
@@ -30,8 +30,8 @@ print(f"Loading model: {model_name} with precision {precision}")
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     torch_dtype=precision,
-    # device_map='auto' # Usually NOT used with DeepSpeed ZeRO-3
-    low_cpu_mem_usage=True # Recommended for large models with DeepSpeed
+    local_files_only=True, # Using local model
+    low_cpu_mem_usage=True # For large models with DeepSpeed
 )
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -58,6 +58,7 @@ tokenized_dataset = dataset.map(
     tokenize_pair,
     batched=True,
     num_proc=num_proc,
+    local_files_only=True,
     remove_columns=["self_prompt", "other_prompt"]
 )
 print("Tokenization complete.")

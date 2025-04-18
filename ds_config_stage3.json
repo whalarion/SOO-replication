@@ -50,7 +50,7 @@
   "wall_clock_breakdown": false,
   "activation_checkpointing": {
     "partition_activations": true,
-    "cpu_checkpointing": false,
+    "cpu_checkpointing": true,
     "contiguous_memory_optimization": true,
     "synchronize_checkpoint_boundary": false
   }

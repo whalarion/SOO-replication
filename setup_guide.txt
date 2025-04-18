@@ -1,0 +1,16 @@
+
+
+#Move repo to project directory
+#Open terminal in project folder, create venv and install packages:
+module load pytorch   # Or the specific version
+soo_env/bin/python -m pip install --upgrade pip
+source soo_env/bin/activate
+pip install -r requirements.txt
+
+#gemma is gated so request access to it on huggingface and generate read key.
+#Then add it to the venv:
+huggingface-cli login
+
+#deactivate venv and run the batch job:
+deactivate
+sbatch <script.sh>   #replace with script name
