@@ -23,7 +23,7 @@ export HF_DATASETS_CACHE=$LOCAL_SCRATCH/.cache/huggingface/datasets # Where HF d
 mkdir -p $HF_DATASETS_CACHE # Ensure it exists
 mkdir -p $HF_HOME # Ensure base cache dir exists on NVMe
 export PYTHONUNBUFFERED=1 # Disables buffering for easier debugging
-export HF_TOKEN="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"  # Gemma is gated so this is needed to download
+export HF_TOKEN=""  # Gemma is gated so this is needed to download
 
 # Define paths
 TRAINING_SCRIPT="finetuning_test.py"
