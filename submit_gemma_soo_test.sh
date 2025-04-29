@@ -1,13 +1,13 @@
 #!/bin/bash
 #SBATCH --job-name=gemma-soo-TEST
 #SBATCH --account=project_2013894
-#SBATCH --partition=gpu
+#SBATCH --partition=gputest
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=4
+#SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:v100:4,nvme:80
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=373G
-#SBATCH --time=01:00:00
+#SBATCH --cpus-per-task=10
+#SBATCH --mem=370G
+#SBATCH --time=00:15:00
 
 # --- Load Required Modules ---
 module purge
@@ -24,11 +24,12 @@ mkdir -p $HF_DATASETS_CACHE # Ensure it exists
 mkdir -p $HF_HOME # Ensure base cache dir exists on NVMe
 export PYTHONUNBUFFERED=1 # Disables buffering for easier debugging
 export HF_TOKEN=""  # Gemma is gated so this is needed to download
+export NCCL_DEBUG=INFO
 
 # Define paths
 TRAINING_SCRIPT="finetuning_test.py"
-DS_CONFIG="ds_config_stage3.json"
-TEST_DATA_FILE="soo_test_data10.jsonl"
+DS_CONFIG="ds_config_stage2.json"
+TEST_DATA_FILE="soo_finetuning_data10.jsonl"
 TEST_OUTPUT_DIR="/scratch/project_2013894/gemma-lora-soo-TEST-OUTPUT"
 
 # Create test output directory
@@ -41,12 +42,12 @@ echo "Using Test Dataset: $TEST_DATA_FILE"
 echo "Outputting to: $TEST_OUTPUT_DIR"
 
 # Launch with deepspeed
-srun deepspeed $TRAINING_SCRIPT \
+deepspeed $TRAINING_SCRIPT \
     --deepspeed $DS_CONFIG \
     --data_file $TEST_DATA_FILE \
     --output_dir $TEST_OUTPUT_DIR \
-    --model_name_or_path "/scratch/project_2013894/models" \
-    --max_steps 10 \
+    --model_name_or_path  "google/gemma-3-4b-it" \
+    --max_steps 2 \
     --per_device_train_batch_size 1 \
 
 EXIT_CODE=$? # Captures error code of "srun deepspeed"
