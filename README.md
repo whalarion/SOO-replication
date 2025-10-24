@@ -1,4 +1,4 @@
-# Replication of Self-Other Overlap (SOO) Fine-tuning for Gemma-2-27B
+# Replication of Self-Other Overlap (SOO) Fine-tuning
 
 *Status: Project is currently held up due to HPC resource availability and I'm still troubleshooting. Code will not work as is.*
 
